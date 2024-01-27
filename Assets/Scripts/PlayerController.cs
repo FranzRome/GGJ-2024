@@ -145,8 +145,8 @@ public class PlayerController : MonoBehaviour
                     pickable.transform.localPosition = new Vector3(2f, 1.2f, 3f);
                     pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                     pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
-                    pickable = null;
                     pickable.GetComponent<AudioSource>().Play();
+                    pickable = null;
                 }
                 else
                 {
