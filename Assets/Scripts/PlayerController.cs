@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
                 {
                     //pickable.SetActive(false);
                     pickable.transform.SetParent(Camera.main.transform);
-                    pickable.transform.localPosition = new Vector3(0, 2f, 5f);
+                    pickable.transform.localPosition = new Vector3(0, 1f, 5f);
 
 
 
@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour
                         Debug.Log("Key Picked!");
                         keyPicked = true;
                         pickable.transform.SetParent(Camera.main.transform);
-                        pickable.transform.localPosition = new Vector3(0f, 1f, 4f);
+                        pickable.transform.localPosition = new Vector3(2f, 1.2f, 3f);
                         pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                         pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
                         pickable.GetComponent<AudioSource>().Play();
@@ -155,6 +155,7 @@ public class PlayerController : MonoBehaviour
                         pickupText.text = pickable.GetComponent<Pickup>().description;
                         pickupMessage.SetActive(true);
                         canMove = false;
+                        Destroy(pickable, 4);
                         pickable = null;
                     }
                 }
