@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     // Variabili per la gestione del movimento e del salto
     public float movementSpeed = 1.0f;
     public float jumpForce = 10.0f;
+    public float runningSpeedMultiplier = 3.0f;
 
     // Nomi degli assi di input per il movimento
     private string horizontalName = "Horizontal", verticalName = "Vertical";
@@ -40,6 +41,12 @@ public class PlayerController : MonoBehaviour
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
         verticalValue = Input.GetAxis(verticalName);
+
+        if(Input.GetButtonDown("Fire2"))
+        {
+            Debug.Log("Run");
+            horizontalValue *= 4;
+        }
 
         // Resetta il contatore dei dash se il giocatore è a terra
         if (isGrounded)
