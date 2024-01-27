@@ -1,50 +1,97 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour
 {
     // Variabili per la gestione del movimento e del salto
     public float movementSpeed = 1.0f;
+    public float maxMovementSpeed = 5.0f;
     public float jumpForce = 10.0f;
     //public float runningSpeedMultiplier = 3.0f;
-    public Transform spawn;
+    //public Transform spawn;
+    public LayerMask ground;
+    public GameObject pickUpHint;
+    public GameObject pickupMessage;
+    public TextMeshProUGUI pickupText;
 
     // Nomi degli assi di input per il movimento
-    private string horizontalName = "Horizontal", verticalName = "Vertical";
+    private string horizontalName = "Horizontal";
 
     // Valori dell'input orizzontale e verticale
-    private float horizontalValue, verticalValue;
+    private float horizontalValue;
 
     // Riferimento al componente Rigidbody del giocatore
     private Rigidbody body;
+    private SpriteRenderer sprite;
+    private Animator animator;
+    private AudioSource source;
 
-    // Flag che indica se il giocatore è a contatto con il terreno
+    // Flag che indica se il giocatore ? a contatto con il terreno
     private bool isGrounded;
 
-    // Contatore per il numero di dash disponibili
+    // Contatore per il numero di doppi salti disponibili
     private int dashCount = 1;
 
-    // Start è chiamato prima del primo frame
+    private GameObject pickable;
+    private bool keyPicked;
+    private bool canMove;
+
+    // Start ? chiamato prima del primo frame
     void Start()
     {
         // Ottieni il riferimento al componente Rigidbody
         body = GetComponent<Rigidbody>();
+        sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
+
+        isGrounded = false;
+        canMove = true;
     }
 
-    // Update è chiamato una volta per ogni frame
+    // Update ? chiamato una volta per ogni frame
     void Update()
     {
-        // Verifica se il giocatore è a contatto con il terreno
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.01f);
+        // Verifica se il giocatore ? a contatto con il terreno
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.88f, ground);
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
 
-        verticalValue = Input.GetAxis(verticalName);
+        //transform.Translate(Vector2.right * horizontalValue * movementSpeed * Time.deltaTime);
 
+        //Imposta il parametro sull'animator
+        animator.SetFloat(horizontalName, horizontalValue);
+
+        // Ruota lo sprite nella direzione di movimento
+        if(horizontalValue < 0)
+        {
+            sprite.flipX = true;
+        } else if(horizontalValue > 0)
+        {
+            sprite.flipX = false;
+        }
+        else
+        {
+
+        }
+
+        if(Mathf.Abs(horizontalValue)>0 && isGrounded)
+        {
+            if (!source.isPlaying)
+            {
+                source.Play();
+            }
+        }
+        else
+        {
+            source.Stop();
+        }
         /*
          * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
         {
@@ -53,7 +100,7 @@ public class PlayerController : MonoBehaviour
         }
         */
 
-        // Resetta il contatore dei dash se il giocatore è a terra
+        // Resetta il contatore dei dash se il giocatore ? a terra
         if (isGrounded)
         {
             dashCount = 1;
@@ -65,30 +112,93 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Jump");
             Jump();
         }
-        // Gestisci il dash in aria
+        // Gestisci il doppio salto
         else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
         {
             Dash();
             dashCount--;
         }
-
         // Riporta il Player allo Spawn
-        if(Input.GetKeyDown(KeyCode.R))
+        /*else if(Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("Spawn");
             body.Move(spawn.position, Quaternion.identity);
             body.velocity = Vector3.zero;
         }
+        else*/ if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (pickable)
+            {
+                //pickable.SetActive(false);
+                //pickable.transform.SetParent(Camera.main);
+
+                pickUpHint.SetActive(false);
+
+                
+
+                if (pickable.name == "Key")
+                {
+                    Debug.Log("Key Picked!");
+                    keyPicked = true;
+                }
+                else
+                {
+                    pickupText.text = pickable.GetComponent<Pickup>().description;
+                    pickupMessage.SetActive(true);
+                    canMove = false;
+                    pickupMessage = null;
+                }
+            }
+            else
+            {
+                pickupMessage.SetActive(false);
+                canMove = true;
+            }
+        }
 
         //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
     }
 
-    // FixedUpdate è chiamato ad intervalli fissi e viene utilizzato per la fisica
+    // FixedUpdate ? chiamato ad intervalli fissi e viene utilizzato per la fisica
     private void FixedUpdate()
     {
         // Applica la forza per il movimento laterale
-        body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
-        Debug.Log("horizontalvalue " + horizontalValue);
+        //body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
+        if (canMove)
+        {
+            body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
+            if (Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
+            {
+                body.velocity = body.velocity.normalized * maxMovementSpeed;
+            }
+        }
+        //Debug.Log(body.velocity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Pickup"))
+        {
+            pickable = other.gameObject;
+            pickUpHint.SetActive(true);
+        }
+        else if (other.CompareTag("Reset"))
+        {   
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
+        }
+        else if(other.CompareTag("Door") && keyPicked)
+        {
+            other.GetComponent<Animation>().Play();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Pickup"))
+        {
+            pickable = null;
+            pickUpHint.SetActive(false);
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -108,4 +218,5 @@ public class PlayerController : MonoBehaviour
         body.velocity = new Vector3(body.velocity.x, 0f, 0f);
         body.AddForce(new Vector3(0, jumpForce / 1.5f, 0), ForceMode.Impulse);
     }
+
 }
