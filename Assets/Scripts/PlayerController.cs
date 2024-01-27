@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
     // Variabili per la gestione del movimento e del salto
     public float movementSpeed = 1.0f;
     public float jumpForce = 10.0f;
-    public float runningSpeedMultiplier = 3.0f;
+    //public float runningSpeedMultiplier = 3.0f;
     public Transform spawn;
 
     // Nomi degli assi di input per il movimento
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
+
         verticalValue = Input.GetAxis(verticalName);
 
         /*
@@ -77,15 +79,20 @@ public class PlayerController : MonoBehaviour
             body.Move(spawn.position, Quaternion.identity);
             body.velocity = Vector3.zero;
         }
-    }
 
-    public void Left() { }
+        //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
+    }
 
     // FixedUpdate è chiamato ad intervalli fissi e viene utilizzato per la fisica
     private void FixedUpdate()
     {
         // Applica la forza per il movimento laterale
         body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
+    }
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        horizontalValue = context.ReadValue<Vector2>().x;
     }
 
     // Funzione per gestire il salto
