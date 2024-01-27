@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     // Riferimento al componente Rigidbody del giocatore
     private Rigidbody body;
 
-    // Flag che indica se il giocatore è a contatto con il terreno
+    // Flag che indica se il giocatore ? a contatto con il terreno
     private bool isGrounded;
 
     // Contatore per il numero di doppi salti disponibili
@@ -33,17 +33,17 @@ public class PlayerController : MonoBehaviour
     private GameObject pickable;
     private bool keyPicked;
 
-    // Start è chiamato prima del primo frame
+    // Start ? chiamato prima del primo frame
     void Start()
     {
         // Ottieni il riferimento al componente Rigidbody
         body = GetComponent<Rigidbody>();
     }
 
-    // Update è chiamato una volta per ogni frame
+    // Update ? chiamato una volta per ogni frame
     void Update()
     {
-        // Verifica se il giocatore è a contatto con il terreno
+        // Verifica se il giocatore ? a contatto con il terreno
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.51f);
 
         // Ottieni i valori dell'input orizzontale e verticale
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
         }
         */
 
-        // Resetta il contatore dei dash se il giocatore è a terra
+        // Resetta il contatore dei dash se il giocatore ? a terra
         if (isGrounded)
         {
             dashCount = 1;
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
         //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
     }
 
-    // FixedUpdate è chiamato ad intervalli fissi e viene utilizzato per la fisica
+    // FixedUpdate ? chiamato ad intervalli fissi e viene utilizzato per la fisica
     private void FixedUpdate()
     {
         // Applica la forza per il movimento laterale
@@ -117,12 +117,13 @@ public class PlayerController : MonoBehaviour
             pickable = other.gameObject;
             pickUpHint.SetActive(true);
         }
-        else
+        else if (other.CompareTag("Reset"))
+        {   
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);   
+        }
+        else if(other.CompareTag("Door") && keyPicked)
         {
-            if(other.CompareTag("Reset"))
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
+            other.GetComponent<Animation>().Play();
         }
     }
 
