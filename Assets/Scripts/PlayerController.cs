@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
         {
             Debug.Log("Run");
-            horizontalValue *= 6;
+            horizontalValue *= 5;
         }
 
         // Resetta il contatore dei dash se il giocatore è a terra
@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Left() { }
+
     // FixedUpdate è chiamato ad intervalli fissi e viene utilizzato per la fisica
     private void FixedUpdate()
     {
@@ -84,7 +86,7 @@ public class PlayerController : MonoBehaviour
     // Funzione per gestire il dash in aria
     private void Dash()
     {
-        body.velocity = Vector3.zero;
+        body.velocity = new Vector3(body.velocity.x, 0f, 0f);
         body.AddForce(new Vector3(0, jumpForce / 1.5f, 0), ForceMode.Impulse);
     }
 }
