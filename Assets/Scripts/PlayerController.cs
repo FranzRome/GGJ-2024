@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
 
         //Imposta il parametro sull'animator
         animator.SetFloat(horizontalName, horizontalValue);
+        Debug.Log(animator.GetFloat("Horizontal"));
 
         // Ruota lo sprite nella direzione di movimento
         if(horizontalValue < 0)
