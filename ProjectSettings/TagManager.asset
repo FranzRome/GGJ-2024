@@ -8,6 +8,7 @@ TagManager:
   - Pickup
   - Reset
   - Next Level
+  - GameMusic
   layers:
   - Default
   - TransparentFX
