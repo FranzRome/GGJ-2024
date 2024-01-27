@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -14,15 +15,19 @@ public class PlayerController : MonoBehaviour
     //public float runningSpeedMultiplier = 3.0f;
     public Transform spawn;
     public GameObject pickUpHint;
+    public GameObject pickupMessage;
+    public TextMeshProUGUI pickupText;
 
     // Nomi degli assi di input per il movimento
-    private string horizontalName = "Horizontal", verticalName = "Vertical";
+    private string horizontalName = "Horizontal";
 
     // Valori dell'input orizzontale e verticale
-    private float horizontalValue, verticalValue;
+    private float horizontalValue;
 
     // Riferimento al componente Rigidbody del giocatore
     private Rigidbody body;
+    private SpriteRenderer sprite;
+    private Animator animator;
 
     // Flag che indica se il giocatore ? a contatto con il terreno
     private bool isGrounded;
@@ -32,26 +37,45 @@ public class PlayerController : MonoBehaviour
 
     private GameObject pickable;
     private bool keyPicked;
+    private bool isPaused = false;
 
     // Start ? chiamato prima del primo frame
     void Start()
     {
         // Ottieni il riferimento al componente Rigidbody
         body = GetComponent<Rigidbody>();
+        sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
+
+        isGrounded = false;
     }
 
     // Update ? chiamato una volta per ogni frame
     void Update()
     {
         // Verifica se il giocatore ? a contatto con il terreno
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.51f);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.86f);
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
 
-        verticalValue = Input.GetAxis(verticalName);
+        //transform.Translate(Vector2.right * horizontalValue * movementSpeed * Time.deltaTime);
 
-        //if
+        //Imposta il parametro sull'animator
+        animator.SetFloat(horizontalName, horizontalValue);
+
+        // Ruota lo sprite nella direzione di movimento
+        if(horizontalValue < 0)
+        {
+            sprite.flipX = true;
+        } else if(horizontalValue > 0)
+        {
+            sprite.flipX = false;
+        }
+        else
+        {
+
+        }
 
         /*
          * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
@@ -80,18 +104,25 @@ public class PlayerController : MonoBehaviour
             dashCount--;
         }
         // Riporta il Player allo Spawn
-        else if(Input.GetKeyDown(KeyCode.R))
+        /*else if(Input.GetKeyDown(KeyCode.R))
         {
             Debug.Log("Spawn");
             body.Move(spawn.position, Quaternion.identity);
             body.velocity = Vector3.zero;
         }
-        else if (Input.GetKeyDown(KeyCode.E) && pickable)
+        else*/ if (Input.GetKeyDown(KeyCode.E) && pickable)
         {
             pickable.SetActive(false);
             pickUpHint.SetActive(false);
+
+            pickupText.text = pickable.GetComponent<Pickup>().description;
+            pickupMessage.SetActive(true);
+
+            Time.timeScale = 0f;
+
             if (pickable.name == "Key")
             {
+                Debug.Log("Key Picked!");
                 keyPicked = true;
             }
         }
@@ -103,8 +134,8 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // Applica la forza per il movimento laterale
-        body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
-        //body.velocity.x = Mathf.Clamp(body.velocity.x, -maxMovementSpeed, maxMovementSpeed);
+        //body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
+        body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
         if(Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
         {
             body.velocity = body.velocity.normalized * maxMovementSpeed;
