@@ -57,6 +57,6 @@ public class PlayerController : MonoBehaviour
 
     private void Dash()
     {
-        body.AddForce(new Vector3(0, jumpForce/1.2f, 0), ForceMode.Impulse);
+        body.AddForce(new Vector3(0, jumpForce/1.5f, 0), ForceMode.Impulse);
     }
 }
