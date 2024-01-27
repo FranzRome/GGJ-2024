@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
     {
         // Applica la forza per il movimento laterale
         body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
+        Debug.Log("horizontalvalue " + horizontalValue);
     }
 
     public void Move(InputAction.CallbackContext context)
