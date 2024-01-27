@@ -83,9 +83,10 @@ public class PlayerController : MonoBehaviour
 
         if(Mathf.Abs(horizontalValue)>0 && isGrounded)
         {
-            if(!source.isPlaying)
-                source.time = Random.Range(0f, source.clip.length);
+            if (!source.isPlaying)
+            {
                 source.Play();
+            }
         }
         else
         {
