@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
 
         verticalValue = Input.GetAxis(verticalName);
 
+        //if
+
         /*
          * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
         {
