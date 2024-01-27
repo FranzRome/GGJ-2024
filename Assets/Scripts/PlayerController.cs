@@ -43,11 +43,13 @@ public class PlayerController : MonoBehaviour
         horizontalValue = Input.GetAxis(horizontalName);
         verticalValue = Input.GetAxis(verticalName);
 
-        if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
+        /*
+         * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
         {
             Debug.Log("Run");
             horizontalValue *= 5;
         }
+        */
 
         // Resetta il contatore dei dash se il giocatore è a terra
         if (isGrounded)
