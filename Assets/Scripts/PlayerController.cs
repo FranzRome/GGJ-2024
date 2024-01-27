@@ -13,7 +13,8 @@ public class PlayerController : MonoBehaviour
     public float maxMovementSpeed = 5.0f;
     public float jumpForce = 10.0f;
     //public float runningSpeedMultiplier = 3.0f;
-    public Transform spawn;
+    //public Transform spawn;
+    public LayerMask ground;
     public GameObject pickUpHint;
     public GameObject pickupMessage;
     public TextMeshProUGUI pickupText;
@@ -37,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private GameObject pickable;
     private bool keyPicked;
-    private bool isPaused = false;
+    private bool canMove;
 
     // Start ? chiamato prima del primo frame
     void Start()
@@ -48,13 +49,14 @@ public class PlayerController : MonoBehaviour
         animator = transform.GetChild(0).GetComponent<Animator>();
 
         isGrounded = false;
+        canMove = true;
     }
 
     // Update ? chiamato una volta per ogni frame
     void Update()
     {
         // Verifica se il giocatore ? a contatto con il terreno
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.86f);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.88f, ground);
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
@@ -110,20 +112,34 @@ public class PlayerController : MonoBehaviour
             body.Move(spawn.position, Quaternion.identity);
             body.velocity = Vector3.zero;
         }
-        else*/ if (Input.GetKeyDown(KeyCode.E) && pickable)
+        else*/ if (Input.GetKeyDown(KeyCode.E))
         {
-            pickable.SetActive(false);
-            pickUpHint.SetActive(false);
-
-            pickupText.text = pickable.GetComponent<Pickup>().description;
-            pickupMessage.SetActive(true);
-
-            Time.timeScale = 0f;
-
-            if (pickable.name == "Key")
+            if (pickable)
             {
-                Debug.Log("Key Picked!");
-                keyPicked = true;
+                //pickable.SetActive(false);
+                //pickable.transform.SetParent(Camera.main);
+
+                pickUpHint.SetActive(false);
+
+                
+
+                if (pickable.name == "Key")
+                {
+                    Debug.Log("Key Picked!");
+                    keyPicked = true;
+                }
+                else
+                {
+                    pickupText.text = pickable.GetComponent<Pickup>().description;
+                    pickupMessage.SetActive(true);
+                    canMove = false;
+                    pickupMessage = null;
+                }
+            }
+            else
+            {
+                pickupMessage.SetActive(false);
+                canMove = true;
             }
         }
 
@@ -135,12 +151,15 @@ public class PlayerController : MonoBehaviour
     {
         // Applica la forza per il movimento laterale
         //body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
-        body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
-        if(Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
+        if (canMove)
         {
-            body.velocity = body.velocity.normalized * maxMovementSpeed;
+            body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
+            if (Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
+            {
+                body.velocity = body.velocity.normalized * maxMovementSpeed;
+            }
         }
-        Debug.Log(body.velocity);
+        //Debug.Log(body.velocity);
     }
 
     private void OnTriggerEnter(Collider other)
