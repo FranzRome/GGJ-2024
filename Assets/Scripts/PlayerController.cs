@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 1.0f;
     public float jumpForce = 10.0f;
     public float runningSpeedMultiplier = 3.0f;
+    public Transform spawn;
 
     // Nomi degli assi di input per il movimento
     private string horizontalName = "Horizontal", verticalName = "Vertical";
@@ -65,6 +66,14 @@ public class PlayerController : MonoBehaviour
         {
             Dash();
             dashCount--;
+        }
+
+        // Riporta il Player allo Spawn
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("Spawn");
+            body.Move(spawn.position, Quaternion.identity);
+            body.velocity = Vector3.zero;
         }
     }
 
