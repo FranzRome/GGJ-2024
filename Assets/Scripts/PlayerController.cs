@@ -146,6 +146,7 @@ public class PlayerController : MonoBehaviour
                     pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                     pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
                     pickable = null;
+                    pickable.GetComponent<AudioSource>().Play();
                 }
                 else
                 {
@@ -195,6 +196,7 @@ public class PlayerController : MonoBehaviour
         else if(other.CompareTag("Door") && keyPicked)
         {
             other.GetComponent<Animation>().Play();
+            other.GetComponent<AudioSource>().Play();
         }
         else if(other.CompareTag("Next Level"))
         {
