@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sprite;
     private Animator animator;
     private GameObject cam;
+    private AudioSource source;
 
     // Flag che indica se il giocatore ? a contatto con il terreno
     private bool isGrounded;
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
         body = GetComponent<Rigidbody>();
         sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
         animator = transform.GetChild(0).GetComponent<Animator>();
+        source = GetComponent<AudioSource>();
 
         isGrounded = false;
         canMove = true;
@@ -80,6 +82,17 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        if(Mathf.Abs(horizontalValue)>0 && isGrounded)
+        {
+            if (!source.isPlaying)
+            {
+                source.Play();
+            }
+        }
+        else
+        {
+            source.Stop();
+        }
         /*
          * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
         {
