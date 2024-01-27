@@ -84,6 +84,7 @@ public class PlayerController : MonoBehaviour
     // Funzione per gestire il dash in aria
     private void Dash()
     {
+        body.velocity = Vector3.zero;
         body.AddForce(new Vector3(0, jumpForce / 1.5f, 0), ForceMode.Impulse);
     }
 }
