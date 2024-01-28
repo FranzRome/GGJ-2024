@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public GameObject pickupMessage;
     public TextMeshProUGUI pickupText;
 
+    public GameObject music;
+
     // Nomi degli assi di input per il movimento
     private string horizontalName = "Horizontal";
 
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
         cam = Camera.main.gameObject;
         camControl = cam.GetComponent<CameraController>();
         source = GetComponent<AudioSource>();
+        music = GameObject.Find("Music");
 
         isGrounded = false;
         //canMove = true;
@@ -232,6 +235,11 @@ public class PlayerController : MonoBehaviour
         else if(other.CompareTag("Next Level"))
         {
             // Carica la scena successiva
+            if(SceneManager.GetActiveScene().buildIndex == 1)
+            {
+               Destroy(music);
+            }
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }

@@ -8379,6 +8379,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
+      propertyPath: music
+      value: 
+      objectReference: {fileID: 1286824910}
+    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: pickUpHint
       value: 
       objectReference: {fileID: 2035027895}
