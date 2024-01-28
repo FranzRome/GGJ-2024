@@ -40,8 +40,9 @@ public class PlayerController : MonoBehaviour
     private int dashCount = 1;
 
     private GameObject pickable;
+    private GameObject pickableClone;
     private bool keyPicked;
-    private bool canMove;
+    //private bool canMove;
 
     // Start ? chiamato prima del primo frame
     void Start()
@@ -55,7 +56,7 @@ public class PlayerController : MonoBehaviour
         source = GetComponent<AudioSource>();
 
         isGrounded = false;
-        canMove = true;
+        //canMove = true;
     }
 
     // Update ? chiamato una volta per ogni frame
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
             //Imposta il parametro sull'animator
             animator.SetFloat(horizontalName, horizontalValue);
-            Debug.Log(animator.GetFloat("Horizontal"));
+            //Debug.Log(animator.GetFloat("Horizontal"));
 
             // Ruota lo sprite nella direzione di movimento
             if (horizontalValue < 0)
@@ -118,7 +119,7 @@ public class PlayerController : MonoBehaviour
             // Gestisci il salto
             if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
             {
-                Debug.Log("Jump");
+                //Debug.Log("Jump");
                 Jump();
             }
             // Gestisci il doppio salto
@@ -137,34 +138,33 @@ public class PlayerController : MonoBehaviour
             else*/
             if (Input.GetKeyDown(KeyCode.E))
             {
-                    if (pickable)
+                if (pickable)
+                {
+                    //pickable.SetActive(false);
+                    pickable.GetComponent<AudioSource>().Play();
+
+                    if (pickable.name == "Key")
                     {
-                        //pickable.SetActive(false);
-                        pickable.transform.SetParent(Camera.main.transform);
-                        pickable.transform.localPosition = new Vector3(0, 1f, 5f);
-
-
-                        pickable.GetComponent<AudioSource>().Play();
-
-
-                        if (pickable.name == "Key")
-                        {
-                            Debug.Log("Key Picked!");
-                            keyPicked = true;
-                            pickable.transform.SetParent(Camera.main.transform);
-                            pickable.transform.localPosition = new Vector3(1.2f, 0.9f, 3f);
-                            pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                            pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
-                            pickable = null;
-                        }
-                        else
-                        {
-                            pickupText.text = pickable.GetComponent<Pickup>().description;
-                            pickupMessage.SetActive(true);
-                            canMove = false;
-                            Destroy(pickable, 3);
-                            pickable = null;
-                        }
+                        //Debug.Log("Key Picked!");
+                        pickable.transform.SetParent(cam.transform);
+                        keyPicked = true;
+                        pickable.transform.localPosition = new Vector3(0f, 0.9f, 3f);
+                        pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                        pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
+                        pickable = null;
+                    }
+                    else
+                    {
+                        pickableClone = Instantiate(pickable);
+                        pickableClone.transform.SetParent(cam.transform);
+                        pickableClone.transform.localPosition = new Vector3(0f, 0.1f, 3f);
+                        pickupText.text = pickable.GetComponent<Pickup>().description;
+                        pickUpHint.SetActive(false);
+                        pickupMessage.SetActive(true);
+                        //canMove = false;
+                        //Destroy(pickable, 3);
+                        //pickable = null;
+                    }
                 }
                 
             }
@@ -172,8 +172,10 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Jump"))
         {
             pickupMessage.SetActive(false);
-            canMove = true;
-            //Destroy(pickable);
+            //canMove = true;
+            //Debug.Log(pickable.name);
+            Destroy(pickableClone);
+            Destroy(pickable);
             pickable = null;
         }
 
@@ -185,7 +187,7 @@ public class PlayerController : MonoBehaviour
     {
         // Applica la forza per il movimento laterale
         //body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
-        if (canMove)
+        if (!pickupMessage.activeSelf)
         {
             body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
             if (Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
@@ -201,6 +203,7 @@ public class PlayerController : MonoBehaviour
         if(other.CompareTag("Pickup"))
         {
             pickable = other.gameObject;
+            Debug.Log(pickable.name);
             pickUpHint.SetActive(true);
         }
         else if (other.CompareTag("Reset"))
