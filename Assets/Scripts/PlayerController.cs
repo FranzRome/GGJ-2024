@@ -194,8 +194,9 @@ public class PlayerController : MonoBehaviour
         
         if (!pickupMessage.activeSelf)
         {
-            //body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
-            body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
+            body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
+            //body.velocity = Vector3.zero;
+            //body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
             if (Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
             {
                 body.velocity = body.velocity.normalized * maxMovementSpeed;
