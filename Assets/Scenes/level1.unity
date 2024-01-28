@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8325,6 +8325,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: 3c5e068fc17b444c5ba13b97da84a73f, type: 3}
+    - target: {fileID: 192194621755957016, guid: cf396bec6eea1e24587284491442a72a, type: 3}
+      propertyPath: m_Drag
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 289773767540800425, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.6
@@ -8395,12 +8399,16 @@ PrefabInstance:
       objectReference: {fileID: 708815841}
     - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: movementSpeed
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: pickupMessage
       value: 
       objectReference: {fileID: 626079200}
+    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
+      propertyPath: maxMovementSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7774951219547340908, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: m_TagString
       value: GameMusic
