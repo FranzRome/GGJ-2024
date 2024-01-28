@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6816,6 +6816,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6509225629606589143, guid: 768122e909759fd4b8f11baa2afada98, type: 3}
   m_PrefabInstance: {fileID: 5670945231468909544}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1422466162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5766229652634430975, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
+  m_PrefabInstance: {fileID: 1419591670548819799}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1452910539
 GameObject:
   m_ObjectHideFlags: 0
@@ -7873,22 +7878,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4185591439591850521, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
-      propertyPath: m_fontSize
-      value: 31
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185591439591850521, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 353d3b7e0770d484abd887439ec7256c, type: 2}
-    - target: {fileID: 4185591439591850521, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
-      propertyPath: m_fontSizeBase
-      value: 31
-      objectReference: {fileID: 0}
-    - target: {fileID: 4185591439591850521, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8397,6 +8386,10 @@ PrefabInstance:
       propertyPath: pickupText
       value: 
       objectReference: {fileID: 708815841}
+    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
+      propertyPath: startMessage
+      value: 
+      objectReference: {fileID: 1422466162}
     - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: movementSpeed
       value: 7
