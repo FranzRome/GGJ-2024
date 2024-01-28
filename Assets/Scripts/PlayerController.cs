@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sprite;
     private Animator animator;
     private GameObject cam;
+    private CameraController camControl;
     private AudioSource source;
 
     // Flag che indica se il giocatore ? a contatto con il terreno
@@ -49,6 +50,8 @@ public class PlayerController : MonoBehaviour
         body = GetComponent<Rigidbody>();
         sprite = transform.GetChild(0).GetComponent<SpriteRenderer>();
         animator = transform.GetChild(0).GetComponent<Animator>();
+        cam = Camera.main.gameObject;
+        camControl = cam.GetComponent<CameraController>();
         source = GetComponent<AudioSource>();
 
         isGrounded = false;
@@ -64,108 +67,114 @@ public class PlayerController : MonoBehaviour
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
 
-        //transform.Translate(Vector2.right * horizontalValue * movementSpeed * Time.deltaTime);
-
-        //Imposta il parametro sull'animator
-        animator.SetFloat(horizontalName, horizontalValue);
-        Debug.Log(animator.GetFloat("Horizontal"));
-
-        // Ruota lo sprite nella direzione di movimento
-        if(horizontalValue < 0)
-        {
-            sprite.flipX = true;
-        } else if(horizontalValue > 0)
-        {
-            sprite.flipX = false;
-        }
-        else
+        if (!pickupMessage.activeSelf)
         {
 
-        }
+            //Imposta il parametro sull'animator
+            animator.SetFloat(horizontalName, horizontalValue);
+            Debug.Log(animator.GetFloat("Horizontal"));
 
-        if(Mathf.Abs(horizontalValue)>0 && isGrounded)
-        {
-            if (!source.isPlaying)
+            // Ruota lo sprite nella direzione di movimento
+            if (horizontalValue < 0)
             {
-                source.Play();
+                sprite.flipX = true;
+                camControl.offest.x = -1.5f;
             }
-        }
-        else
-        {
-            source.Stop();
-        }
-        /*
-         * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
-        {
-            Debug.Log("Run");
-            horizontalValue *= 5;
-        }
-        */
-
-        // Resetta il contatore dei dash se il giocatore ? a terra
-        if (isGrounded)
-        {
-            dashCount = 1;
-        }
-
-        // Gestisci il salto
-        if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
-        {
-            Debug.Log("Jump");
-            Jump();
-        }
-        // Gestisci il doppio salto
-        else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
-        {
-            Dash();
-            dashCount--;
-        }
-        // Riporta il Player allo Spawn
-        /*else if(Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("Spawn");
-            body.Move(spawn.position, Quaternion.identity);
-            body.velocity = Vector3.zero;
-        }
-        else*/ if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (canMove)
+            else if (horizontalValue > 0)
             {
-                if (pickable)
+                sprite.flipX = false;
+                camControl.offest.x = 1.5f;
+            }
+            else
+            {
+
+            }
+            // Riproduce l'audio dei passi quando cammina a terra
+            if (Mathf.Abs(horizontalValue) > 0 && isGrounded)
+            {
+                if (!source.isPlaying)
                 {
-                    //pickable.SetActive(false);
-                    pickable.transform.SetParent(Camera.main.transform);
-                    pickable.transform.localPosition = new Vector3(0, 1f, 5f);
-
-
-                    pickable.GetComponent<AudioSource>().Play();
-
-
-                    if (pickable.name == "Key")
-                    {
-                        Debug.Log("Key Picked!");
-                        keyPicked = true;
-                        pickable.transform.SetParent(Camera.main.transform);
-                        pickable.transform.localPosition = new Vector3(2f, 1.2f, 3f);
-                        pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                        pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
-                        pickable = null;
-                    }
-                    else
-                    {
-                        pickupText.text = pickable.GetComponent<Pickup>().description;
-                        pickupMessage.SetActive(true);
-                        canMove = false;
-                        Destroy(pickable, 4);
-                        pickable = null;
-                    }
+                    source.Play();
                 }
             }
             else
             {
-                pickupMessage.SetActive(false);
-                canMove = true;
+                source.Stop();
             }
+            /*
+             * if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetButtonDown("Fire2"))
+            {
+                Debug.Log("Run");
+                horizontalValue *= 5;
+            }
+            */
+
+            // Resetta il contatore dei dash se il giocatore ? a terra
+            if (isGrounded)
+            {
+                dashCount = 1;
+            }
+
+            // Gestisci il salto
+            if (isGrounded && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
+            {
+                Debug.Log("Jump");
+                Jump();
+            }
+            // Gestisci il doppio salto
+            else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
+            {
+                Dash();
+                dashCount--;
+            }
+            // Riporta il Player allo Spawn
+            /*else if(Input.GetKeyDown(KeyCode.R))
+            {
+                Debug.Log("Spawn");
+                body.Move(spawn.position, Quaternion.identity);
+                body.velocity = Vector3.zero;
+            }
+            else*/
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                    if (pickable)
+                    {
+                        //pickable.SetActive(false);
+                        pickable.transform.SetParent(Camera.main.transform);
+                        pickable.transform.localPosition = new Vector3(0, 1f, 5f);
+
+
+                        pickable.GetComponent<AudioSource>().Play();
+
+
+                        if (pickable.name == "Key")
+                        {
+                            Debug.Log("Key Picked!");
+                            keyPicked = true;
+                            pickable.transform.SetParent(Camera.main.transform);
+                            pickable.transform.localPosition = new Vector3(1.2f, 0.9f, 3f);
+                            pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                            pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
+                            pickable = null;
+                        }
+                        else
+                        {
+                            pickupText.text = pickable.GetComponent<Pickup>().description;
+                            pickupMessage.SetActive(true);
+                            canMove = false;
+                            Destroy(pickable, 3);
+                            pickable = null;
+                        }
+                }
+                
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("Jump"))
+        {
+            pickupMessage.SetActive(false);
+            canMove = true;
+            //Destroy(pickable);
+            pickable = null;
         }
 
         //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
