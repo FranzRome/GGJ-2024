@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Verifica se il giocatore ? a contatto con il terreno
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.23f, ground);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.3f, ground);
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
