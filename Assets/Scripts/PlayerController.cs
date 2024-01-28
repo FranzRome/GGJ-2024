@@ -63,10 +63,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Verifica se il giocatore ? a contatto con il terreno
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.88f, ground);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.23f, ground);
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
+
+        if(isGrounded)
+        {
+            animator.SetTrigger("Idle");
+        }
 
         if (!pickupMessage.activeSelf)
         {
@@ -121,7 +126,7 @@ public class PlayerController : MonoBehaviour
             {
                 //Debug.Log("Jump");
                 Jump();
-            }
+                animator.SetTrigger("Jump");            }
             // Gestisci il doppio salto
             else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
             {
@@ -186,10 +191,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // Applica la forza per il movimento laterale
-        //body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
+        
         if (!pickupMessage.activeSelf)
         {
-            body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
+            //body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
+            body.AddForce(new Vector3(horizontalValue * movementSpeed, 0, 0), ForceMode.Force);
             if (Mathf.Abs(body.velocity.magnitude) > maxMovementSpeed)
             {
                 body.velocity = body.velocity.normalized * maxMovementSpeed;
