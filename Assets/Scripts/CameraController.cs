@@ -7,8 +7,7 @@ public class CameraController : MonoBehaviour
     public Transform target;
     public float smoothTime = 0.3F;
     private Vector3 velocity = Vector3.zero;
-    [SerializeField]
-    private Vector3 offest;
+    public Vector3 offest;
 
     void FixedUpdate()
     {
