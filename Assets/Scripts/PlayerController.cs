@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
                             Debug.Log("Key Picked!");
                             keyPicked = true;
                             pickable.transform.SetParent(Camera.main.transform);
-                            pickable.transform.localPosition = new Vector3(1.2f, 0.9f, 3f);
+                            pickable.transform.localPosition = new Vector3(0f, 0.9f, 3f);
                             pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
                             pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
                             pickable = null;
