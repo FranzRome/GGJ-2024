@@ -1417,6 +1417,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1010708972}
     - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
+      propertyPath: startMessage
+      value: 
+      objectReference: {fileID: 1783661742}
+    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: pickupMessage
       value: 
       objectReference: {fileID: 94788669}
@@ -8777,11 +8781,20 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5766229652634430975, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
+--- !u!1 &1783661742 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5766229652634430975, guid: 9a6c9894ef45b5d40bff13100950ea0e, type: 3}
+  m_PrefabInstance: {fileID: 1783661741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1811160142 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3667647394317196372, guid: 8aedc89b04e1619458804ac45812b616, type: 3}

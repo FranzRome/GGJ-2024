@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.XR;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +14,7 @@ public class PlayerController : MonoBehaviour
     //public float runningSpeedMultiplier = 3.0f;
     //public Transform spawn;
     public LayerMask ground;
+    public GameObject startMessage;
     public GameObject pickUpHint;
     public GameObject pickupMessage;
     public TextMeshProUGUI pickupText;
@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Idle");
         }
 
-        if (!pickupMessage.activeSelf)
+        if (!pickupMessage.activeSelf && !startMessage.activeSelf)
         {
 
             //Imposta il parametro sull'animator
@@ -179,9 +179,16 @@ public class PlayerController : MonoBehaviour
             pickupMessage.SetActive(false);
             //canMove = true;
             //Debug.Log(pickable.name);
-            Destroy(pickableClone);
-            Destroy(pickable);
-            pickable = null;
+            if (pickableClone != null)
+            {
+                Destroy(pickableClone);
+                Destroy(pickable);
+                pickable = null;
+            }
+            else
+            {
+                startMessage.SetActive(false);
+            }
         }
 
         //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
@@ -192,7 +199,7 @@ public class PlayerController : MonoBehaviour
     {
         // Applica la forza per il movimento laterale
         
-        if (!pickupMessage.activeSelf)
+        if (!pickupMessage.activeSelf && !startMessage.activeSelf)
         {
             body.Move(body.position + new Vector3(horizontalValue * movementSpeed * Time.fixedDeltaTime, 0f, 0f), Quaternion.identity);
             //body.velocity = Vector3.zero;
