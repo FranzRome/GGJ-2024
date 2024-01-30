@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -103,6 +101,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (!source.isPlaying)
                 {
+                    source.pitch = Random.Range(-1f, 1.25f);
                     source.Play();
                 }
             }
@@ -158,7 +157,7 @@ public class PlayerController : MonoBehaviour
                         keyPicked = true;
                         pickable.transform.localPosition = new Vector3(0f, 0.9f, 3f);
                         pickable.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-                        pickable.GetComponent<ParticleSystem>().emissionRate = 0f; ;
+                        pickable.GetComponent<ParticleSystem>().emissionRate = 0f;
                         pickable = null;
                     }
                     else
