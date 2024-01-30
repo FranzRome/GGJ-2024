@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 1.0f;
     public float maxMovementSpeed = 5.0f;
     public float jumpForce = 10.0f;
+    public float groundRayLength = 0.5f;
     //public float runningSpeedMultiplier = 3.0f;
     //public Transform spawn;
     public LayerMask ground;
@@ -64,15 +65,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Verifica se il giocatore ? a contatto con il terreno
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.3f, ground);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, groundRayLength, ground);
 
         // Ottieni i valori dell'input orizzontale e verticale
         horizontalValue = Input.GetAxis(horizontalName);
 
-        if(isGrounded)
-        {
-            animator.SetTrigger("Idle");
-        }
+        
 
         if (!pickupMessage.activeSelf && !startMessage.activeSelf)
         {
@@ -128,11 +126,13 @@ public class PlayerController : MonoBehaviour
             {
                 //Debug.Log("Jump");
                 Jump();
-                animator.SetTrigger("Jump");            }
+                animator.SetTrigger("Jump");
+            }
             // Gestisci il doppio salto
             else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
             {
                 Dash();
+                animator.SetTrigger("Jump");
                 dashCount--;
             }
             // Riporta il Player allo Spawn
@@ -191,6 +191,11 @@ public class PlayerController : MonoBehaviour
             {
                 startMessage.SetActive(false);
             }
+        }
+
+        if (isGrounded && horizontalValue > -0.5 && horizontalValue < 0.5)
+        {
+            animator.SetTrigger("Idle");
         }
 
         //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
@@ -252,6 +257,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(transform.position, Vector3.down * groundRayLength);
+    }
+
     public void Move(InputAction.CallbackContext context)
     {
         horizontalValue = context.ReadValue<Vector2>().x;
@@ -261,6 +272,8 @@ public class PlayerController : MonoBehaviour
     private void Jump()
     {
         body.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+        isGrounded = false;
+        animator.ResetTrigger("idle");
     }
 
     // Funzione per gestire il dash in aria
