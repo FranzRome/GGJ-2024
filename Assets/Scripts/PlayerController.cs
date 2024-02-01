@@ -18,8 +18,6 @@ public class PlayerController : MonoBehaviour
     public GameObject pickupMessage;
     public TextMeshProUGUI pickupText;
 
-    public GameObject music;
-
     // Nomi degli assi di input per il movimento
     private string horizontalName = "Horizontal";
 
@@ -34,10 +32,7 @@ public class PlayerController : MonoBehaviour
     private CameraController camControl;
     private AudioSource source;
 
-    // Flag che indica se il giocatore ? a contatto con il terreno
     private bool isGrounded;
-
-    // Contatore per il numero di doppi salti disponibili
     private int dashCount = 1;
 
     private GameObject pickable;
@@ -45,7 +40,11 @@ public class PlayerController : MonoBehaviour
     private bool keyPicked;
     //private bool canMove;
 
-    // Start ? chiamato prima del primo frame
+    [Header("Audio")]
+    public GameObject music;
+    public GameObject jumpAudioGameObj;
+    public AudioClip[] jumpAudioClips;
+
     void Start()
     {
         // Ottieni il riferimento al componente Rigidbody
@@ -127,13 +126,14 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("Jump");
                 Jump();
                 animator.SetTrigger("Jump");
+                PlayJumpAudio();
             }
             // Gestisci il doppio salto
             else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
             {
                 Dash();
                 animator.SetTrigger("Jump");
-                dashCount--;
+                PlayJumpAudio();
             }
             // Riporta il Player allo Spawn
             /*else if(Input.GetKeyDown(KeyCode.R))
@@ -281,6 +281,21 @@ public class PlayerController : MonoBehaviour
     {
         body.velocity = new Vector3(body.velocity.x, 0f, 0f);
         body.AddForce(new Vector3(0, jumpForce / 1.5f, 0), ForceMode.Impulse);
+        dashCount--;
+    }
+
+    private void PlayJumpAudio()
+    {
+        GameObject instance = Instantiate(jumpAudioGameObj);
+        AudioSource audioSource = instance.GetComponent<AudioSource>();
+
+        instance.transform.SetParent(transform);
+        instance.transform.localPosition = Vector3.zero;
+
+        audioSource.clip = jumpAudioClips[Random.RandomRange(0, jumpAudioClips.Length)];
+        audioSource.Play();
+
+        Destroy(instance, audioSource.clip.length);
     }
 
 }
