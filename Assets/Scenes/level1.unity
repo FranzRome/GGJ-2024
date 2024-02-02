@@ -8408,14 +8408,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270049405778417120, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: e9ac8408eff96874e8e6629401df3925, type: 3}
-    - target: {fileID: 5270049405778417120, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5936104043641625938, guid: cf396bec6eea1e24587284491442a72a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -8440,30 +8432,6 @@ PrefabInstance:
       propertyPath: pickupMessage
       value: 
       objectReference: {fileID: 626079200}
-    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: jumpAudioGameObj
-      value: 
-      objectReference: {fileID: 5837460393897451560, guid: 8f44fa3160526d44bbc57b12b6bc7e06, type: 3}
-    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: jumpAudioClips.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: jumpAudioClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 827e3b913792945d791c57aa4aba775c, type: 3}
-    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: jumpAudioClips.Array.data[1]
-      value: 
-      objectReference: {fileID: 8300000, guid: 2bd514cc7222649969e764691a61e1a0, type: 3}
-    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: jumpAudioClips.Array.data[2]
-      value: 
-      objectReference: {fileID: 8300000, guid: a2854a73d2d5b41efbb7fd011edf5970, type: 3}
-    - target: {fileID: 6450906211521733167, guid: cf396bec6eea1e24587284491442a72a, type: 3}
-      propertyPath: jumpAudioClips.Array.data[3]
-      value: 
-      objectReference: {fileID: 8300000, guid: a295036afe93b42cca48ce2f001a2315, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

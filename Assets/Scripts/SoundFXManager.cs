@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class SoundFXManager : MonoBehaviour
 {
+    public GameObject audioGameObj;
+    public AudioClip[] jumpAudioClips;
+    public AudioClip[] pushAudioClips;
+
+
     public static SoundFXManager instance;
     [SerializeField] private AudioSource soundFXObject;
     // Start is called before the first frame update
@@ -16,21 +21,30 @@ public class SoundFXManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void PlaySoundFXClip(AudioClip[] audioClip, Transform spawnTransform, float volume)
+    public void PlaySoundFXClip(string instanceName, AudioClip[] audioClip, float volume)
     {
-        //random sound
-        int rand = Random.Range(0, audioClip.Length);
-        //spawn in Object
-        AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
-        //Assign audio clip
-        audioSource.clip = audioClip[rand];
-        //Assign volume
+        GameObject instance = Instantiate(audioGameObj);
+        AudioSource audioSource = instance.GetComponent<AudioSource>();
+
+        instance.name = instanceName;
+        instance.transform.SetParent(transform);
+        instance.transform.localPosition = Vector3.zero;
+
+        audioSource.clip = audioClip[Random.RandomRange(0, audioClip.Length)];
         audioSource.volume = volume;
-        //Play sound
         audioSource.Play();
-        //Get lenght of clip
-        float clipLength = audioSource.clip.length;
-        //Destroy after stop
-        Destroy(audioSource.gameObject, clipLength);
+
+        Destroy(instance, audioSource.clip.length);
+    }
+
+
+    public void PlayJumpAudio()
+    {
+        PlaySoundFXClip("JumpSFX", jumpAudioClips, 0.5f);
+    }
+
+    public void PlayPushAudio()
+    {
+        PlaySoundFXClip("PushSFX", pushAudioClips, 0.5f);
     }
 }

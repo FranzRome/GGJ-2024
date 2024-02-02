@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
     public GameObject pickUpHint;
     public GameObject pickupMessage;
     public TextMeshProUGUI pickupText;
+    public LayerMask layerMask;
+    [SerializeField] public SoundFXManager soundFXManager;
 
     // Nomi degli assi di input per il movimento
     private string horizontalName = "Horizontal";
@@ -42,8 +44,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Audio")]
     public GameObject music;
-    public GameObject jumpAudioGameObj;
-    public AudioClip[] jumpAudioClips;
+
 
     void Start()
     {
@@ -126,14 +127,14 @@ public class PlayerController : MonoBehaviour
                 //Debug.Log("Jump");
                 Jump();
                 animator.SetTrigger("Jump");
-                PlayJumpAudio();
+                soundFXManager.PlayJumpAudio();
             }
             // Gestisci il doppio salto
             else if (!isGrounded && dashCount > 0 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Jump")))
             {
                 Dash();
                 animator.SetTrigger("Jump");
-                PlayJumpAudio();
+                soundFXManager.PlayJumpAudio();
             }
             // Riporta il Player allo Spawn
             /*else if(Input.GetKeyDown(KeyCode.R))
@@ -256,7 +257,16 @@ public class PlayerController : MonoBehaviour
             pickUpHint.SetActive(false);
         }
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Pushable") && horizontalValue != 0)
+        {
+            if (Physics.Raycast(transform.position, Vector3.right*(sprite.flipX?-1:1), 10, layerMask))
+            {
+                soundFXManager.PlayPushAudio();
+            }
+        }
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
@@ -284,18 +294,6 @@ public class PlayerController : MonoBehaviour
         dashCount--;
     }
 
-    private void PlayJumpAudio()
-    {
-        GameObject instance = Instantiate(jumpAudioGameObj);
-        AudioSource audioSource = instance.GetComponent<AudioSource>();
 
-        instance.transform.SetParent(transform);
-        instance.transform.localPosition = Vector3.zero;
-
-        audioSource.clip = jumpAudioClips[Random.RandomRange(0, jumpAudioClips.Length)];
-        audioSource.Play();
-
-        Destroy(instance, audioSource.clip.length);
-    }
 
 }

@@ -9,6 +9,7 @@ TagManager:
   - Reset
   - Next Level
   - GameMusic
+  - Pushable
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Pushable
   - 
   - 
   - 

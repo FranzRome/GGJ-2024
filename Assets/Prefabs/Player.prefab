@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 192194621755957016}
   - component: {fileID: 1560303467415935869}
   - component: {fileID: 5270049405778417120}
+  - component: {fileID: 3302961173004897750}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -180,6 +181,7 @@ MonoBehaviour:
   movementSpeed: 7
   maxMovementSpeed: 8
   jumpForce: 10
+  groundRayLength: 0.5
   ground:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -187,6 +189,10 @@ MonoBehaviour:
   pickUpHint: {fileID: 0}
   pickupMessage: {fileID: 0}
   pickupText: {fileID: 0}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  soundFXManager: {fileID: 3302961173004897750}
   music: {fileID: 0}
 --- !u!54 &192194621755957016
 Rigidbody:
@@ -233,8 +239,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 31a127a1bf300448683878d3dde366f7, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: e9ac8408eff96874e8e6629401df3925, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -319,6 +325,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3302961173004897750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936104043641625938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828a27e184dc84e178b5960814bbf8d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioGameObj: {fileID: 5837460393897451560, guid: 8f44fa3160526d44bbc57b12b6bc7e06, type: 3}
+  jumpAudioClips:
+  - {fileID: 8300000, guid: 827e3b913792945d791c57aa4aba775c, type: 3}
+  - {fileID: 8300000, guid: 2bd514cc7222649969e764691a61e1a0, type: 3}
+  - {fileID: 8300000, guid: a2854a73d2d5b41efbb7fd011edf5970, type: 3}
+  - {fileID: 8300000, guid: a295036afe93b42cca48ce2f001a2315, type: 3}
+  - {fileID: 8300000, guid: e523ad0f6299e4ee6ab72d402abc8fda, type: 3}
+  - {fileID: 8300000, guid: 609774ad3e9e246cd83b7620fddd7802, type: 3}
+  pushAudioClips:
+  - {fileID: 8300000, guid: c5ec1c59f20b549bc9a25b9ae304313b, type: 3}
+  - {fileID: 8300000, guid: 93abe3e9bbf6c47359b83faf668417cc, type: 3}
+  - {fileID: 8300000, guid: 6a0d0bb2ab50749d8875236bd73c4b55, type: 3}
+  soundFXObject: {fileID: 4651564460327845666, guid: 8f44fa3160526d44bbc57b12b6bc7e06, type: 3}
 --- !u!1 &7242025047843362691
 GameObject:
   m_ObjectHideFlags: 0
