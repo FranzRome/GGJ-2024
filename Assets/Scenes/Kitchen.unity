@@ -701,6 +701,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: KitchenPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 4177315450752831992, guid: 6c7cec13c25d1734bb454363a6012480, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -7.67
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

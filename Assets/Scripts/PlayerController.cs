@@ -199,6 +199,13 @@ public class PlayerController : MonoBehaviour
             animator.SetTrigger("Idle");
         }
 
+
+#if UNITY_STANDALONE_WIN
+        if(Input.GetButtonDown("Cancel"))
+        {
+            Application.Quit();
+        }
+#endif
         //body.velocity = new Vector3(horizontalValue, body.velocity.y, body.velocity.z);
     }
 
